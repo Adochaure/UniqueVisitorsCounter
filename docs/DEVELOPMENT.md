@@ -53,4 +53,4 @@ npm test
 npm run dev:server  # Start the API foundation with file watching
 ```
 
-The local server health check is available at `http://localhost:3000/health`; production health is at `https://uniquevisitorscounter.onrender.com/health`. Set `DATABASE_URL` in `.env` and apply `server/src/database/schema.sql` to PostgreSQL before calling visitor endpoints. Read a count with `uvc my-portfolio count`.
+The local server health check is available at `http://localhost:3000/health`; production health is at `https://uniquevisitorscounter.onrender.com/health`. Set `DATABASE_URL` in `.env` and apply `server/src/database/schema.sql` to PostgreSQL before calling visitor endpoints. In a website project, create its stable site ID with `npx uvc init`, then read its count from that folder with `npx uvc count`.

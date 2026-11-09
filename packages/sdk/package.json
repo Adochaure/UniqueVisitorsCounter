@@ -1,6 +1,6 @@
 {
   "name": "unique-visitor-counter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Privacy-first unique visitor counter SDK.",
   "license": "MIT",
   "type": "module",
@@ -12,6 +12,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
     }
   },
   "bin": {
@@ -26,6 +31,16 @@
   },
   "dependencies": {
     "uuid": "^11.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "react": "^19.0.0"
   },
   "publishConfig": { "access": "public" }
 }

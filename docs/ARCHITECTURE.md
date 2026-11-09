@@ -4,7 +4,7 @@ This repository is an npm-workspace monorepo: `packages/sdk` is the publishable 
 
 ## SDK
 
-The SDK source is split by responsibility: `index.ts` defines `createCounter`, `client.ts` sends API requests, `storage.ts` retains an anonymous browser UUID in localStorage, `types.ts` holds public types, and `errors.ts` describes SDK errors. tsup produces ESM, CommonJS, and declarations. The package also includes the `uvc` CLI for reading a site's count.
+The SDK source is split by responsibility: `index.ts` defines `createCounter`, `client.ts` sends API requests, `storage.ts` retains an anonymous browser UUID in localStorage, `react.ts` exports the optional React component, `types.ts` holds public types, and `errors.ts` describes SDK errors. tsup produces ESM, CommonJS, and declarations. The `uvc` CLI creates a stable, random site ID in a project's `.uvc.json` and reads the site's count.
 
 ## Backend
 

@@ -15,4 +15,12 @@ export default defineConfig([
     clean: false,
     sourcemap: true,
   },
+  {
+    entry: ['src/react.ts'],
+    format: ['esm', 'cjs'],
+    dts: true,
+    clean: false,
+    sourcemap: true,
+    external: ['react'],
+  },
 ]);
