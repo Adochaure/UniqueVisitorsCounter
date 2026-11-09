@@ -7,8 +7,6 @@ import type { CounterOptions } from './types.js';
 
 export interface VisitorCountProps extends CounterOptions {
   className?: string;
-  loadingText?: string;
-  errorText?: string;
 }
 
 export function VisitorCount({
@@ -16,11 +14,8 @@ export function VisitorCount({
   apiUrl,
   storageKey,
   className,
-  loadingText = 'Loading...',
-  errorText = 'Count unavailable',
 }: VisitorCountProps): ReactElement {
   const [count, setCount] = useState<number | null>(null);
-  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -30,7 +25,7 @@ export function VisitorCount({
         if (isMounted) setCount(value);
       })
       .catch((): void => {
-        if (isMounted) setHasError(true);
+        // Keep the previous number visible if a later fetch fails.
       });
 
     return (): void => {
@@ -38,6 +33,5 @@ export function VisitorCount({
     };
   }, [siteId, apiUrl, storageKey]);
 
-  const text = hasError ? errorText : count === null ? loadingText : `${count} unique visitors`;
-  return createElement('span', { className, 'aria-live': 'polite' }, text);
+  return createElement('span', { className, 'aria-live': 'polite' }, count === null ? '' : String(count));
 }

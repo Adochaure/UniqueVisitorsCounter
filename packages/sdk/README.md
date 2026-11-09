@@ -28,7 +28,7 @@ export function Footer() {
 }
 ```
 
-Replace `your-site-id` with the ID printed by `npx uvc init`.
+Replace `your-site-id` with the ID printed by `npx uvc init`. The component displays only the number. It stays blank until the first result arrives, then keeps the last number visible while updating.
 
 ## Other JavaScript frameworks
 
