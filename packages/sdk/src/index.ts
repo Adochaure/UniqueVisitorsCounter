@@ -3,7 +3,7 @@ import { CounterError } from './errors.js';
 import { getOrCreateVisitorId } from './storage.js';
 import type { Counter, CounterOptions } from './types.js';
 
-const DEFAULT_API_URL = 'http://localhost:3000';
+const DEFAULT_API_URL = 'https://uniquevisitorscounter.onrender.com';
 const DEFAULT_STORAGE_KEY = 'unique-visitor-counter:visitor-id';
 
 export function createCounter(options: CounterOptions): Counter {

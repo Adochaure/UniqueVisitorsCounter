@@ -17,4 +17,4 @@ const count = await counter.getCount();
 document.querySelector('[data-visitor-count]').textContent = String(count);
 ```
 
-Set `apiUrl` in `createCounter` if the API is not at the local development default, for example `https://counter-api.example.com`.
+The SDK defaults to `https://uniquevisitorscounter.onrender.com`. Pass `apiUrl` to `createCounter` only if you are using a different API deployment.

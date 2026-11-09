@@ -39,7 +39,7 @@ RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX=1200
 ```
 
-`CORS_ORIGIN=*` allows the public SDK to work from any customer's website origin. You can instead set a comma-separated allowlist if the API should only serve specific websites. `RATE_LIMIT_MAX` is the request cap during `RATE_LIMIT_WINDOW_MS`; the starter limiter uses one in-memory bucket per server process and does not use client IPs. Set `apiUrl` in `createCounter` and `UVC_API_URL` for the CLI to the deployed API's public URL; those are client-side settings, not server environment variables.
+`CORS_ORIGIN=*` allows the public SDK to work from any customer's website origin. You can instead set a comma-separated allowlist if the API should only serve specific websites. `RATE_LIMIT_MAX` is the request cap during `RATE_LIMIT_WINDOW_MS`; the starter limiter uses one in-memory bucket per server process and does not use client IPs. The SDK and CLI default to `https://uniquevisitorscounter.onrender.com`; set `apiUrl` in `createCounter` or `UVC_API_URL` for the CLI only when using a different API URL. These are client-side settings, not server environment variables.
 
 ## Workspace commands
 
@@ -53,4 +53,4 @@ npm test
 npm run dev:server  # Start the API foundation with file watching
 ```
 
-The server health check is available at `http://localhost:3000/health`. Set `DATABASE_URL` in `.env` and apply `server/src/database/schema.sql` to PostgreSQL before calling visitor endpoints. Read a count with `uvc my-portfolio count`; set `UVC_API_URL` to point the CLI at the server.
+The local server health check is available at `http://localhost:3000/health`; production health is at `https://uniquevisitorscounter.onrender.com/health`. Set `DATABASE_URL` in `.env` and apply `server/src/database/schema.sql` to PostgreSQL before calling visitor endpoints. Read a count with `uvc my-portfolio count`.

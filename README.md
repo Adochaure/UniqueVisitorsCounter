@@ -52,7 +52,7 @@ npm run build
 npm run dev:server
 ```
 
-The health endpoint runs at `http://localhost:3000/health`. See [Development](docs/DEVELOPMENT.md) for workspace commands.
+The deployed API health endpoint is `https://uniquevisitorscounter.onrender.com/health`; locally it is `http://localhost:3000/health`. See [Development](docs/DEVELOPMENT.md) for workspace commands.
 
 ## Project structure
 

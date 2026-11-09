@@ -7,7 +7,7 @@ async function main(): Promise<void> {
     throw new CounterError('Usage: uvc <siteId> count');
   }
 
-  const apiUrl = process.env.UVC_API_URL ?? 'http://localhost:3000';
+  const apiUrl = process.env.UVC_API_URL ?? 'https://uniquevisitorscounter.onrender.com';
   const response = await fetch(
     `${apiUrl.replace(/\/$/, '')}/v1/visitors/${encodeURIComponent(siteId)}/count`,
   );
