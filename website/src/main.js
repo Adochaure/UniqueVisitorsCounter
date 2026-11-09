@@ -111,6 +111,21 @@ document.querySelector('#visitor-count').textContent =
     const section = document.getElementById(link.dataset.section);
     if (section) sectionObserver.observe(section);
   });
+
+  document.querySelectorAll('.docs-content pre').forEach((codeBlock) => {
+    const code = codeBlock.querySelector('code');
+    if (!code) return;
+
+    const copyButtonSlot = document.createElement('span');
+    copyButtonSlot.className = 'docs-copy-slot';
+    codeBlock.append(copyButtonSlot);
+    createRoot(copyButtonSlot).render(
+      React.createElement(CopyButton, {
+        content: code.textContent,
+        'aria-label': 'Copy code snippet',
+      }),
+    );
+  });
 }
 
 if (window.location.pathname.replace(/\/$/, '') === '/docs') renderDocs();
