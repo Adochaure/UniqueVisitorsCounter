@@ -10,7 +10,8 @@ export const app = express();
 app.disable('x-powered-by');
 app.use(
   cors({
-    origin: env.corsOrigins.length > 0 ? env.corsOrigins : env.nodeEnv === 'development' ? '*' : false,
+    origin:
+      env.corsOrigins.length === 0 || env.corsOrigins.includes('*') ? '*' : env.corsOrigins,
   }),
 );
 app.use(express.json());
