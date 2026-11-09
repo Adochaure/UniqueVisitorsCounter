@@ -1,0 +1,41 @@
+{
+  "name": "unique-visitor-counter-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Privacy-first unique visitor counter SDK and API foundation.",
+  "workspaces": [
+    "packages/*",
+    "server"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run build --workspace unique-visitor-counter && npm run build --workspace @unique-visitor-counter/server",
+    "build:sdk": "npm run build --workspace unique-visitor-counter",
+    "build:server": "npm run build --workspace @unique-visitor-counter/server",
+    "dev:server": "npm run dev --workspace @unique-visitor-counter/server",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspace unique-visitor-counter && npm run typecheck --workspace @unique-visitor-counter/server",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.10",
+    "@types/pg": "^8.11.11",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  },
+  "dependencies": {
+    "@neon/config": "^1.13.0",
+    "@neon/env": "^2.1.0"
+  }
+}
