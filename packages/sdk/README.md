@@ -1,6 +1,6 @@
-# unique-visitor-counter
+# Unique Visitor Counter
 
-Show a lifetime unique visitor count on a website. The SDK stores an anonymous browser UUID in `localStorage`; the API counts each browser once per site. It does not use IP tracking or browser fingerprinting.
+Add a lifetime unique visitor count to your website with a small JavaScript SDK.
 
 ## Install
 
@@ -8,65 +8,50 @@ Show a lifetime unique visitor count on a website. The SDK stores an anonymous b
 npm install unique-visitor-counter
 ```
 
-## Create a site ID
+## Set up your site
 
-Run this in your website project folder after installing the package:
+From your website project's folder, run:
 
 ```sh
 npx uvc init
 ```
 
-The command creates `.uvc.json` with a random ID for this website and prints the ID. Keep `.uvc.json` with your project (it is an identifier, not a secret). Use the same ID in all pages and deployments of this website. Run `npx uvc init` again in the same folder to display the existing ID.
+The command creates a site ID and saves it in `.uvc.json`. Copy the printed ID into the example for your framework. Keep using the same ID for every page on this website.
 
 ## React
-
-Import the component from the React entry point and paste the generated ID:
 
 ```tsx
 import { VisitorCount } from 'unique-visitor-counter/react';
 
 export function Footer() {
-  return <VisitorCount siteId="site_PASTE_THE_ID_FROM_UVC_INIT" />;
+  return <VisitorCount siteId="your-site-id" />;
 }
 ```
 
-The component fetches the count when it mounts and shows a loading message until the request completes. It accepts optional `className`, `loadingText`, `errorText`, and `apiUrl` props.
+Replace `your-site-id` with the ID printed by `npx uvc init`.
 
-React is an optional peer dependency. React projects already have it; non-React projects do not need to install React.
+## Other JavaScript frameworks
 
-## Other JavaScript projects
-
-Use the framework-independent API in Vue, Angular, Svelte, or browser JavaScript:
+Use this API with Vue, Angular, Svelte, or browser JavaScript:
 
 ```ts
 import { createCounter } from 'unique-visitor-counter';
 
-const counter = createCounter({ siteId: 'site_PASTE_THE_ID_FROM_UVC_INIT' });
+const counter = createCounter({ siteId: 'your-site-id' });
 const count = await counter.getCount();
 document.querySelector('#visitor-count')!.textContent = `${count} unique visitors`;
 ```
 
-Call `getCount()` on page load. A refresh in the same browser reuses the stored ID and leaves the total unchanged. The SDK uses `https://uniquevisitorscounter.onrender.com` by default; pass `apiUrl` only if using another API deployment.
+Replace `your-site-id` with the ID printed by `npx uvc init`. Call `getCount()` when the page loads. The count updates on the next page load or refresh.
 
-## CLI
+## Check your count
 
-Read this site's current total from its project folder:
+From the website project's folder, run:
 
 ```sh
 npx uvc count
 ```
 
-Or provide an ID explicitly from any folder:
+## Privacy
 
-```sh
-npx uvc site_PASTE_THE_ID_FROM_UVC_INIT count
-```
-
-Set `UVC_API_URL` if the API has a different base URL. The CLI prints the count and does not add a visitor.
-
-## Privacy and limitations
-
-- No IP tracking or browser fingerprinting.
-- A browser ID stays in that site's `localStorage`.
-- Clearing browser storage or using another browser/device can create another counted visitor.
-- The browser ID is anonymous, not a verified person identity.
+The SDK stores a random browser ID in `localStorage`. It does not use IP tracking or browser fingerprinting. Clearing browser storage or switching browsers may count as a new visitor.
