@@ -1,6 +1,6 @@
 import { registerAndFetchCount } from './client.js';
 import { CounterError } from './errors.js';
-import { getOrCreateVisitorId } from './storage.js';
+import { getOrCreateVisitorId, saveCachedCount } from './storage.js';
 import type { Counter, CounterOptions } from './types.js';
 
 const DEFAULT_API_URL = 'https://uniquevisitorscounter.onrender.com';
@@ -17,7 +17,9 @@ export function createCounter(options: CounterOptions): Counter {
   return {
     async getCount(): Promise<number> {
       const visitorId = getOrCreateVisitorId(storageKey);
-      return registerAndFetchCount(apiUrl, options.siteId, visitorId);
+      const count = await registerAndFetchCount(apiUrl, options.siteId, visitorId);
+      saveCachedCount(storageKey, count);
+      return count;
     },
   };
 }

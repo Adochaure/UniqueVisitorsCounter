@@ -28,7 +28,7 @@ export function Footer() {
 }
 ```
 
-Replace `your-site-id` with the ID printed by `npx uvc init`. The component displays only the number, stays blank until the first result arrives, and keeps the previous number visible while updating.
+Replace `your-site-id` with the ID printed by `npx uvc init`. The component displays only the number. On a first visit it stays blank until the count arrives. On later visits it shows the saved count immediately while refreshing, and keeps that count if a refresh fails.
 
 ## Other JavaScript frameworks
 

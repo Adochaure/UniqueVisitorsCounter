@@ -41,6 +41,7 @@ describe('createCounter', () => {
     expect(firstBody.siteId).toBe('portfolio');
     expect(firstBody.visitorId).toMatch(/^[0-9a-f-]{36}$/i);
     expect(secondBody.visitorId).toBe(firstBody.visitorId);
+    expect(values.get('unique-visitor-counter:visitor-id:portfolio:count')).toBe('1');
   });
 
   it('rejects an unsuccessful API response', async () => {
