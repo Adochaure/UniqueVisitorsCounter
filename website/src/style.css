@@ -27,9 +27,15 @@ a:hover { color: var(--accent); }
 .topline { display: flex; align-items: center; justify-content: space-between; min-height: 18px; }
 .release, .visitor-stat, .bottom-links, .install-command { font-family: 'DM Mono', ui-monospace, monospace; }
 .release { margin: 0; padding: 5px 8px; background: var(--accent); color: #fff; font-size: 12px; user-select: none; }
+.header-stats { display: inline-flex; align-items: center; gap: 15px; }
+.download-stat { display: inline-flex; align-items: baseline; gap: 3px; color: #858178; font: 12px 'DM Mono', ui-monospace, monospace; white-space: nowrap; }
+.download-icon { width: 13px; height: 13px; align-self: center; margin-right: 2px; color: var(--accent); }
+.download-count { color: #a09b92; font-weight: 500; font-variant-numeric: tabular-nums; }
+.download-plus { margin-left: -3px; color: #a09b92; }
+.download-label { color: #a09b92; font-size: 10px; }
 .visitor-stat { display: inline-flex; align-items: center; gap: 7px; color: #858178; font-size: 12px; white-space: nowrap; }
-.visitor-icon { position: relative; display: inline-flex; width: 16px; height: 14px; align-items: end; justify-content: center; gap: 1px; margin-right: 2px; }
-.visitor-icon i { display: block; width: 4px; height: 6px; border: 1px solid #858178; border-radius: 4px 4px 1px 1px; }
+.visitor-icon {  position: relative; display: inline-flex; width: 16px; height: 14px; align-items: end; justify-content: center; gap: 1px; margin-right: 2px; }
+.visitor-icon i {color: var(--accent); display: block; width: 4px; height: 6px; border: 1px solid var(--accent); border-radius: 4px 4px 1px 1px; }
 .visitor-icon i:nth-child(2) { height: 9px; }
 .visitor-icon i:nth-child(3) { height: 6px; }
 .visitor-label { margin-left: 1px; color: #a09b92; font-size: 10px; }
@@ -64,7 +70,9 @@ a:hover { color: var(--accent); }
 @media (max-width: 480px) {
   .page { padding: 32px 23px; }
   .content { gap: 27px; }
-  .release, .visitor-stat, .bottom-links { font-size: 10px; }
+  .release, .visitor-stat, .download-stat, .bottom-links { font-size: 10px; }
+  .header-stats { gap: 9px; }
+  .download-label { font-size: 9px; }
   .headline-line { font-size: clamp(27px, 8vw, 34px); }
   .install-command { font-size: 11px; }
   .microcopy { font-size: 10px; line-height: 1.6; }

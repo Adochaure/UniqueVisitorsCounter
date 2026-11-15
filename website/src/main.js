@@ -15,7 +15,10 @@ function renderHome() {
       <div class="content">
         <header class="topline fade-in fade-late">
           <a class="release" href="https://www.npmjs.com/package/unique-visitor-counter">v0.3.0 is out!</a>
-          <div class="visitor-stat" aria-label="Unique visitors"><span class="visitor-icon" aria-hidden="true"><i></i><i></i><i></i></span><span id="visitor-count" aria-live="polite">${loadingText}</span><span class="visitor-label">unique visitors</span></div>
+          <div class="header-stats">
+            <div class="download-stat" aria-label="712 plus downloads"><svg class="download-icon" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="M8 2.5v7m0 0 2.75-2.75M8 9.5 5.25 6.75M3 11v2h10v-2" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="download-count" id="download-count">0</span><span class="download-plus">+</span><span class="download-label">downloads</span></div>
+            <div class="visitor-stat" aria-label="Unique visitors"><span class="visitor-icon" aria-hidden="true"><i></i><i></i><i></i></span><span id="visitor-count" aria-live="polite">${loadingText}</span><span class="visitor-label">unique visitors</span></div>
+          </div>
         </header>
         <section class="intro" aria-label="Unique Visitor Counter">
           <p class="headline-line"><span class="word word-one">Count</span><span class="word word-two">your</span><span class="word word-three">unique</span></p>
@@ -33,6 +36,17 @@ function renderHome() {
   createRoot(document.querySelector('#install-copy-button')).render(
     React.createElement(CopyButton, { content: installCommand, 'aria-label': 'Copy install command' }),
   );
+
+  const downloadCount = document.querySelector('#download-count');
+  const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1200;
+  const start = performance.now();
+  const animateDownloads = (now) => {
+    const progress = duration === 0 ? 1 : Math.min((now - start) / duration, 1);
+    const eased = 1 - (1 - progress) ** 3;
+    downloadCount.textContent = Math.round(712 * eased).toLocaleString();
+    if (progress < 1) requestAnimationFrame(animateDownloads);
+  };
+  requestAnimationFrame(animateDownloads);
 
   createCounter({ siteId }).getCount().then((count) => {
     document.querySelector('#visitor-count').textContent = count.toLocaleString();
