@@ -6,7 +6,8 @@
   "description": "Privacy-first unique visitor counter SDK and API foundation.",
   "workspaces": [
     "packages/*",
-    "server"
+    "server",
+    "website"
   ],
   "engines": {
     "node": ">=20"
@@ -16,6 +17,8 @@
     "build:sdk": "npm run build --workspace unique-visitor-counter",
     "build:server": "npm run build --workspace @unique-visitor-counter/server",
     "dev:server": "npm run dev --workspace @unique-visitor-counter/server",
+    "dev:website": "npm run dev --workspace unique-visitor-counter-website",
+    "build:website": "npm run build:sdk && npm run build --workspace unique-visitor-counter-website",
     "lint": "eslint .",
     "typecheck": "npm run typecheck --workspace unique-visitor-counter && npm run typecheck --workspace @unique-visitor-counter/server",
     "test": "vitest run"

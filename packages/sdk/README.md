@@ -28,7 +28,7 @@ export function Footer() {
 }
 ```
 
-Replace `your-site-id` with the ID printed by `npx uvc init`. The component displays only the number. On a first visit it stays blank until the count arrives. After that, it shows the saved count immediately and keeps it visible while refreshing; if a refresh fails, it keeps the saved count.
+Replace `your-site-id` with the ID printed by `npx uvc init`. On the first visit, the component shows `Loading...` until the count arrives. Later visits show the saved number while it refreshes, without a loading message. It keeps the saved number if a refresh fails. Use `loadingText` or `errorText` to customize the first-load messages.
 
 ## Other JavaScript frameworks
 

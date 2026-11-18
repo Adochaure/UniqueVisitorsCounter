@@ -10,6 +10,8 @@ const DEFAULT_STORAGE_KEY = 'unique-visitor-counter:visitor-id';
 
 export interface VisitorCountProps extends CounterOptions {
   className?: string;
+  loadingText?: string;
+  errorText?: string;
 }
 
 export function VisitorCount({
@@ -17,14 +19,22 @@ export function VisitorCount({
   apiUrl,
   storageKey,
   className,
+  loadingText = 'Loading...',
+  errorText = 'Count unavailable',
 }: VisitorCountProps): ReactElement {
   const [count, setCount] = useState<number | null>(null);
+  const [hasCheckedCache, setHasCheckedCache] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const visitorStorageKey = `${storageKey ?? DEFAULT_STORAGE_KEY}:${siteId}`;
 
   useEffect(() => {
     let isMounted = true;
     const cachedCount = getCachedCount(visitorStorageKey);
-    if (cachedCount !== null) setCount(cachedCount);
+    if (cachedCount !== null) {
+      setCount(cachedCount);
+    } else {
+      setHasCheckedCache(true);
+    }
 
     void createCounter({ siteId, apiUrl, storageKey })
       .getCount()
@@ -32,7 +42,10 @@ export function VisitorCount({
         if (isMounted) setCount(value);
       })
       .catch((): void => {
-        // Keep the previous number visible if a later fetch fails.
+        if (isMounted && cachedCount === null) {
+          setHasCheckedCache(true);
+          setHasError(true);
+        }
       });
 
     return (): void => {
@@ -40,5 +53,12 @@ export function VisitorCount({
     };
   }, [siteId, apiUrl, storageKey, visitorStorageKey]);
 
-  return createElement('span', { className, 'aria-live': 'polite' }, count === null ? '' : String(count));
+  const text = count !== null
+    ? String(count)
+    : hasError
+      ? errorText
+      : hasCheckedCache
+        ? loadingText
+        : '';
+  return createElement('span', { className, 'aria-live': 'polite' }, text);
 }
