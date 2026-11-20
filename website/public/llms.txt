@@ -1,0 +1,10 @@
+# Unique Visitor Counter
+
+Unique Visitor Counter is a small JavaScript package for showing a lifetime unique browser count on a website. It provides a ready-made React component, a framework-independent JavaScript API, and a command line tool. It identifies repeat visits with a random ID stored in local storage; it does not use cookies, IP tracking, or browser fingerprinting.
+
+## Key pages
+
+- [Home](/): Product overview, intended users, counting behavior, privacy, and common questions.
+- [Documentation](/docs/): Installation, setup, React and JavaScript examples, CLI usage, privacy details, and troubleshooting.
+- [GitHub repository](https://github.com/Adochaure/UniqueVisitorsCounter): Source code and project information.
+- [npm package](https://www.npmjs.com/package/unique-visitor-counter): Package details and installation.

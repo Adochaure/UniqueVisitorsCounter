@@ -4,15 +4,65 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#faf9f6" />
-    <meta name="description" content="Count unique visitors on your website with a small, privacy-first JavaScript package." />
-    <title>Unique Visitor Counter - Count your unique visitors</title>
+    <meta name="description" content="Add a lifetime unique visitor count to your website with a small JavaScript SDK for React and other frameworks. No cookies, IP tracking, or fingerprinting." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Unique Visitor Counter — privacy-first website visitor counts" />
+    <meta property="og:description" content="A small JavaScript SDK for lifetime unique visitor counts. Works with React and other frameworks without cookies, IP tracking, or fingerprinting." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Unique Visitor Counter" />
+    <meta name="twitter:description" content="A small, privacy-first JavaScript SDK for lifetime unique visitor counts." />
+    <title>Unique Visitor Counter — privacy-first website visitor counts</title>
     <meta name="google-site-verification" content="2ZZIg-EceOwXBKsRUitC15qZ0wPCHV18pzZuzSMLr9c" />
+    <link rel="stylesheet" href="/src/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="app"></div>
+    <main class="page">
+      <div class="content">
+        <header class="topline fade-in fade-late">
+          <a class="release" href="https://www.npmjs.com/package/unique-visitor-counter">v0.3.0 is out!</a>
+          <div class="header-stats">
+            <div class="download-stat" aria-label="712 plus downloads"><svg class="download-icon" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="M8 2.5v7m0 0 2.75-2.75M8 9.5 5.25 6.75M3 11v2h10v-2" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="download-count" id="download-count">712</span><span class="download-plus">+</span><span class="download-label">downloads</span></div>
+            <div class="visitor-stat" aria-label="Unique visitors"><span class="visitor-icon" aria-hidden="true"><i></i><i></i><i></i></span><span id="visitor-count" aria-live="polite">—</span><span class="visitor-label">unique visitors</span></div>
+          </div>
+        </header>
+        <section class="intro" aria-labelledby="page-title">
+          <h1 id="page-title" class="headline-line"><span class="word word-one">Count</span><span class="word word-two">unique</span><span class="word word-three">website</span><span class="word word-four accent">visitors.</span></h1>
+        </section>
+        <p class="home-lede">A lightweight JavaScript package for displaying a lifetime unique visitor count on your website. Use the ready-made React component or call the SDK from JavaScript, Vue, Angular, or Svelte.</p>
+        <div class="install-command fade-in fade-command"><span>npm install&nbsp;<strong>unique-visitor-counter</strong></span><span id="install-copy-button"></span></div>
+        <nav class="bottom-links fade-in fade-late" aria-label="Project links">
+          <a href="/docs/">[documentation]</a>
+          <span class="right-links"><a href="https://github.com/Adochaure/UniqueVisitorsCounter" target="_blank" rel="noreferrer">[github]</a><a href="https://www.npmjs.com/package/unique-visitor-counter" target="_blank" rel="noreferrer">[npm]</a></span>
+        </nav>
+        <p class="microcopy fade-in fade-late">A simple lifetime count. No cookies, IP tracking, or fingerprinting.</p>
+        <article class="home-details">
+          <section>
+            <h2>Simple visitor counting for websites</h2>
+            <p>Unique Visitor Counter gives a website a shared lifetime total. Install the npm package, create a site ID with <code>npx uvc init</code>, and add the count to a React app or any browser JavaScript project. The package includes a command line tool for checking the current total.</p>
+          </section>
+          <section>
+            <h2>Who it is for</h2>
+            <p>Use it on personal sites, project pages, blogs, and small products when you want to show how many browsers have visited without adding a full analytics dashboard. It is designed for developers who want a small, easy-to-integrate counter.</p>
+          </section>
+          <section>
+            <h2>How the count works</h2>
+            <p>The SDK creates a random browser ID and saves it in local storage. The service counts that browser once per site ID and returns the lifetime total. Clearing local storage or changing browsers can create a new ID, so the number is an estimate of unique browsers rather than verified people.</p>
+          </section>
+          <section>
+            <h2>Frequently asked questions</h2>
+            <h3>Does it use cookies or track IP addresses?</h3>
+            <p>No. The SDK uses a random ID in local storage; it does not use cookies, IP addresses, or browser fingerprinting to identify visitors.</p>
+            <h3>Can I use it without React?</h3>
+            <p>Yes. Call <code>createCounter()</code> from browser JavaScript or use the package with Vue, Angular, or Svelte. See the <a href="/docs/#javascript">JavaScript guide</a>.</p>
+            <h3>How do I install and configure it?</h3>
+            <p>Install <code>unique-visitor-counter</code>, run <code>npx uvc init</code> in your project, and use the generated site ID. Read the <a href="/docs/">quick start and full documentation</a>.</p>
+          </section>
+        </article>
+      </div>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
