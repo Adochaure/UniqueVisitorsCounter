@@ -30,6 +30,7 @@ a:hover { color: var(--accent); }
 .brand-mark { display: inline-flex; width: 24px; height: 24px; align-items: center; justify-content: center; border: 1px dashed var(--border); border-right: 0; }
 .brand-mark img { display: block; width: 20px; height: 20px; object-fit: contain; }
 .release { display: inline-flex; height: 24px; align-items: center; margin: 0; padding: 0 8px; background: var(--accent); color: #fff; font-size: 12px; user-select: none; }
+.release:hover {color: #716c73;}
 .header-stats { display: inline-flex; align-items: center; gap: 15px; }
 .download-stat { display: inline-flex; align-items: baseline; gap: 3px; color: #858178; font: 12px 'DM Mono', ui-monospace, monospace; white-space: nowrap; }
 .download-icon { width: 13px; height: 13px; align-self: center; margin-right: 2px; color: var(--accent); }
