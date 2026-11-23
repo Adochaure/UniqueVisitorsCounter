@@ -1,16 +1,34 @@
 # Unique Visitor Counter
 
+<p align="center"><img src="https://ik.imagekit.io/adochaure/uvc_icon.webp?updatedAt=1795192359048" alt="Unique Visitor Counter logo" width="120" /></p>
+
 Add a lifetime unique visitor count to your website with a small JavaScript SDK.
 
+**[Website](https://unique-visitors-counter.vercel.app/) · [GitHub](https://github.com/Adochaure/UniqueVisitorsCounter) · [npm](https://www.npmjs.com/package/unique-visitor-counter)**
+
 ## Install
+
+Choose your package manager:
 
 ```sh
 npm install unique-visitor-counter
 ```
 
+```sh
+yarn add unique-visitor-counter
+```
+
+```sh
+pnpm add unique-visitor-counter
+```
+
+```sh
+bun add unique-visitor-counter
+```
+
 ## Set up your site
 
-Run this in your website project's folder:
+Run this in your website project's folder (use `npx uvc init`, `yarn uvc init`, `pnpm exec uvc init`, or `bunx uvc init`):
 
 ```sh
 npx uvc init

@@ -3,6 +3,25 @@
   "version": "0.3.0",
   "description": "Privacy-first unique visitor counter SDK.",
   "license": "MIT",
+  "homepage": "https://unique-visitors-counter.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Adochaure/UniqueVisitorsCounter.git",
+    "directory": "packages/sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/Adochaure/UniqueVisitorsCounter/issues"
+  },
+  "keywords": [
+    "unique-visitor-counter",
+    "visitor counter",
+    "unique visitors",
+    "visitor count",
+    "website analytics",
+    "privacy first",
+    "javascript",
+    "react"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
