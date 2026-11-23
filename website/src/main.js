@@ -81,6 +81,7 @@ if (growthForm) {
   const growthRange = document.querySelector('#growth-range');
   const growthResults = document.querySelector('#growth-results');
   const growthChart = document.querySelector('#growth-chart');
+  const growthTooltip = document.querySelector('#growth-tooltip');
   const growthTotal = document.querySelector('#growth-total');
   const growthStatus = document.querySelector('#growth-status');
   const growthError = document.querySelector('#growth-error');
@@ -94,6 +95,42 @@ if (growthForm) {
     if (textContent !== undefined) element.textContent = textContent;
     return element;
   };
+
+  let growthChartPoints = [];
+  const hideGrowthTooltip = () => {
+    growthTooltip.hidden = true;
+  };
+  const showGrowthTooltip = (point) => {
+    const visitorLabel = `${point.count.toLocaleString()} new unique visitor${point.count === 1 ? '' : 's'}`;
+    const svgPoint = growthChart.createSVGPoint();
+    svgPoint.x = point.x;
+    svgPoint.y = point.y;
+    const clientPoint = svgPoint.matrixTransform(growthChart.getScreenCTM());
+    const chartBounds = growthTooltip.parentElement.getBoundingClientRect();
+    growthTooltip.textContent = `${point.date}: ${visitorLabel}`;
+    growthTooltip.style.left = `${Math.min(chartBounds.width - 12, Math.max(12, clientPoint.x - chartBounds.left))}px`;
+    growthTooltip.style.top = `${clientPoint.y - chartBounds.top}px`;
+    growthTooltip.hidden = false;
+  };
+
+  growthChart.addEventListener('pointermove', (event) => {
+    if (!growthChartPoints.some((point) => point.count > 0)) return;
+    const matrix = growthChart.getScreenCTM();
+    if (!matrix) return;
+    const pointer = growthChart.createSVGPoint();
+    pointer.x = event.clientX;
+    pointer.y = event.clientY;
+    const chartPoint = pointer.matrixTransform(matrix.inverse());
+    if (chartPoint.x < 42 || chartPoint.x > 706 || chartPoint.y < 18 || chartPoint.y > 202) {
+      hideGrowthTooltip();
+      return;
+    }
+    const closestPoint = growthChartPoints.reduce((closest, point) => (
+      Math.abs(point.x - chartPoint.x) < Math.abs(closest.x - chartPoint.x) ? point : closest
+    ));
+    showGrowthTooltip(closestPoint);
+  });
+  growthChart.addEventListener('pointerleave', hideGrowthTooltip);
 
   const renderGrowthChart = (days, entries) => {
     const byDate = new Map(entries.map(({ date, count }) => [date, count]));
@@ -114,8 +151,10 @@ if (growthForm) {
       x: left + (points.length === 1 ? 0 : index / (points.length - 1)) * (right - left),
       y: bottom - (point.count / tickMax) * (bottom - top),
     }));
+    growthChartPoints = coordinates;
     growthChart.replaceChildren();
     growthChart.setAttribute('aria-label', `Daily new unique visitors over the last ${days} days`);
+    growthTooltip.hidden = true;
 
     for (let tick = 0; tick <= 4; tick += 1) {
       const value = (tickMax / 4) * tick;
@@ -153,8 +192,21 @@ if (growthForm) {
       }, 'No new visitors in this period'));
     } else {
       coordinates.forEach((point) => {
+        const visitorLabel = `${point.date}: ${point.count.toLocaleString()} new unique visitor${point.count === 1 ? '' : 's'}`;
+        const hitTarget = svgElement('circle', {
+          cx: point.x,
+          cy: point.y,
+          r: 9,
+          class: 'growth-hit-target',
+          tabindex: 0,
+          role: 'img',
+          'aria-label': visitorLabel,
+          'aria-describedby': 'growth-tooltip',
+        });
+        hitTarget.addEventListener('focus', () => showGrowthTooltip(point));
+        hitTarget.addEventListener('blur', hideGrowthTooltip);
+        growthChart.append(hitTarget);
         const marker = svgElement('circle', { cx: point.x, cy: point.y, r: points.length > 45 ? 2.3 : 3.2, class: 'growth-point' });
-        marker.append(svgElement('title', {}, `${point.date}: ${point.count} new unique visitor${point.count === 1 ? '' : 's'}`));
         growthChart.append(marker);
       });
     }

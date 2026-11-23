@@ -16,8 +16,11 @@
     <main class="page analytics-page">
       <div class="analytics-shell">
         <nav class="analytics-nav" aria-label="Main navigation">
-          <a class="analytics-brand" href="/">Unique Visitor Counter</a>
-          <span><a href="/docs/">[docs]</a><a href="/">[home]</a></span>
+          <a class="page-brand analytics-brand" href="/" aria-label="Unique Visitor Counter home"><img src="https://ik.imagekit.io/adochaure/uvc_icon.webp" alt="" width="24" height="24" /><span>Unique Visitor Counter</span></a>
+          <div class="analytics-nav-tools">
+            <div class="visitor-stat" aria-label="Unique visitors"><span class="visitor-icon" aria-hidden="true"><i></i><i></i><i></i></span><span id="visitor-count" aria-live="polite">—</span><span class="visitor-label">unique visitors</span></div>
+            <span><a href="/docs/">[docs]</a><a href="/">[home]</a></span>
+          </div>
         </nav>
         <section class="growth-panel" id="visitor-growth" aria-labelledby="growth-title">
           <div class="growth-heading">
@@ -45,6 +48,7 @@
             </div>
             <div class="growth-chart-wrap">
               <svg class="growth-chart" id="growth-chart" viewBox="0 0 720 250" role="img" aria-label="Daily new unique visitors over the last 30 days"></svg>
+              <div class="growth-tooltip" id="growth-tooltip" role="tooltip" hidden></div>
             </div>
             <p class="growth-status" id="growth-status" aria-live="polite"></p>
           </div>
