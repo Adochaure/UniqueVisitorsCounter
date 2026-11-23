@@ -22,11 +22,14 @@
         <div class="docs-layout">
           <aside class="docs-toc"><span class="toc-label">ON THIS PAGE</span><a class="docs-toc-link" href="#start">Quick start</a><a class="docs-toc-link" href="#react">React</a><a class="docs-toc-link" href="#javascript">JavaScript</a><a class="docs-toc-link" href="#counting">How counting works</a><a class="docs-toc-link" href="#privacy">Privacy</a><a class="docs-toc-link" href="#cli">CLI</a><a class="docs-toc-link" href="#troubleshooting">Troubleshooting</a></aside>
           <article class="docs-content">
-            <p class="docs-eyebrow">DOCUMENTATION · V0.3.0</p>
+            <p class="docs-eyebrow">DOCUMENTATION · V0.4.0</p>
             <h1>Unique Visitor Counter documentation</h1>
             <p class="docs-lede">Install and configure a small JavaScript package for showing a lifetime unique browser count on your website. Use the ready-made React component or call the SDK directly from JavaScript and other frameworks.</p>
 
-            <section id="start"><h2>Quick start</h2><p>Install the package in your website project:</p><pre><code>npm install unique-visitor-counter</code></pre><p>Create a site ID from that same project folder:</p><pre><code>npx uvc init</code></pre><p>The command prints your site ID and saves it in <code>.uvc.json</code>. Use that same ID on every page of the same website. Keep it available to your app wherever you use the counter.</p></section>
+            <section id="start"><h2>Quick start</h2><p>Install with your preferred package manager:</p><pre><code>npm install unique-visitor-counter
+yarn add unique-visitor-counter
+pnpm add unique-visitor-counter
+bun add unique-visitor-counter</code></pre><p>Create a site ID from that same project folder:</p><pre><code>npx uvc init</code></pre><p>Or use <code>yarn uvc init</code>, <code>pnpm exec uvc init</code>, or <code>bunx uvc init</code>. The command prints your site ID and saves it in <code>.uvc.json</code>. Use that same ID on every page of the same website. Keep it available to your app wherever you use the counter.</p></section>
 
             <section id="react"><h2>React</h2><p>Import the component from the React entry point and place it where you want the number to appear:</p><pre><code>import { VisitorCount } from 'unique-visitor-counter/react';
 

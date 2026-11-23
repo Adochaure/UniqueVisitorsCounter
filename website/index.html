@@ -22,10 +22,11 @@
   <body>
     <main class="page">
       <div class="content">
+        <div class="home-hero">
         <header class="topline fade-in fade-late">
           <div class="brand-release">
             <a class="brand-mark" href="/" aria-label="Unique Visitor Counter home"><img src="https://ik.imagekit.io/adochaure/uvc_icon.webp" alt="Unique Visitor Counter logo" width="24" height="24" /></a>
-            <a class="release" href="https://www.npmjs.com/package/unique-visitor-counter">v0.3.0 is out!</a>
+            <a class="release" href="https://www.npmjs.com/package/unique-visitor-counter">v0.4.0 is out!</a>
           </div>
           <div class="header-stats">
             <div class="download-stat" aria-label="712 plus downloads"><svg class="download-icon" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="M8 2.5v7m0 0 2.75-2.75M8 9.5 5.25 6.75M3 11v2h10v-2" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="download-count" id="download-count">720</span><span class="download-plus">+</span><span class="download-label">downloads</span></div>
@@ -36,13 +37,29 @@
           <h1 id="page-title" class="headline-line"><span class="word word-one">Count</span><span class="word word-two">unique</span><span class="word word-three">website</span><span class="word word-four accent">visitors.</span></h1>
         </section>
         <p class="home-lede">A lightweight JavaScript package for displaying a lifetime unique visitor count on your website. Use the ready-made React component or call the SDK from JavaScript, Vue, Angular, or Svelte.</p>
-        <div class="install-command fade-in fade-command"><span>npm install&nbsp;<strong>unique-visitor-counter</strong></span><span id="install-copy-button"></span></div>
+          <div class="install-commands fade-in fade-command" aria-label="Install command">
+            <div class="package-manager-tabs" role="group" aria-label="Choose a package manager">
+              <span class="package-manager-indicator" aria-hidden="true"></span>
+              <button class="package-manager-tab" type="button" data-package-manager="npm" aria-pressed="true">npm</button>
+              <button class="package-manager-tab" type="button" data-package-manager="yarn" aria-pressed="false">yarn</button>
+              <button class="package-manager-tab" type="button" data-package-manager="pnpm" aria-pressed="false">pnpm</button>
+              <button class="package-manager-tab" type="button" data-package-manager="bun" aria-pressed="false">bun</button>
+            </div>
+            <div class="install-command">
+              <span class="install-command-text"><span id="install-command-action">npm install</span>&nbsp;<strong>unique-visitor-counter@latest</strong></span>
+              <span class="install-copy-button" id="install-copy-button"></span>
+            </div>
+          </div>
         <nav class="bottom-links fade-in fade-late" aria-label="Project links">
           <a href="/docs/">[doc]</a>
           <span class="right-links"><a href="https://github.com/Adochaure/UniqueVisitorsCounter" target="_blank" rel="noreferrer">[github]</a><a href="https://www.npmjs.com/package/unique-visitor-counter" target="_blank" rel="noreferrer">[npm]</a></span>
         </nav>
         <p class="microcopy fade-in fade-late">A simple lifetime count. No cookies, IP tracking, or fingerprinting.</p>
-        <article class="home-details">
+        <a class="scroll-cue" href="#home-details" aria-label="Scroll down to learn more">
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none"><path d="M10 3.5v12m0 0 5-5m-5 5-5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </a>
+        </div>
+        <article class="home-details" id="home-details">
           <section>
             <h2>Simple visitor counting for websites</h2>
             <p>Unique Visitor Counter gives a website a shared lifetime total. Install the npm package, create a site ID with <code>npx uvc init</code>, and add the count to a React app or any browser JavaScript project. The package includes a command line tool for checking the current total.</p>

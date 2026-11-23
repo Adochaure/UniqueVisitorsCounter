@@ -4,13 +4,50 @@ import { createRoot } from 'react-dom/client';
 import { CopyButton } from './components/CopyButton.jsx';
 
 const siteId = 'site_f321ea1a-9b0a-4f4b-8e02-b017a9f2648d';
-const installCommand = 'npm install unique-visitor-counter';
-
+const packageManagerCommands = {
+  npm: { action: 'npm install', command: 'npm install unique-visitor-counter@latest' },
+  yarn: { action: 'yarn add', command: 'yarn add unique-visitor-counter@latest' },
+  pnpm: { action: 'pnpm add', command: 'pnpm add unique-visitor-counter@latest' },
+  bun: { action: 'bun add', command: 'bun add unique-visitor-counter@latest' },
+};
 const installCopySlot = document.querySelector('#install-copy-button');
 if (installCopySlot) {
-  createRoot(installCopySlot).render(
-    React.createElement(CopyButton, { content: installCommand, 'aria-label': 'Copy install command' }),
-  );
+  const copyButtonRoot = createRoot(installCopySlot);
+  const actionLabel = document.querySelector('#install-command-action');
+  const commandText = document.querySelector('.install-command-text');
+  const managerTabs = [...document.querySelectorAll('.package-manager-tab')];
+  const managerIndicator = document.querySelector('.package-manager-indicator');
+  const moveManagerIndicator = (tab) => {
+    managerIndicator.style.width = `${tab.offsetWidth}px`;
+    managerIndicator.style.transform = `translateX(${tab.offsetLeft - 3}px)`;
+  };
+  const updateInstallCommand = (manager) => {
+    const selectedCommand = packageManagerCommands[manager];
+    if (!selectedCommand) return;
+    actionLabel.textContent = selectedCommand.action;
+    commandText.classList.remove('command-change');
+    void commandText.offsetWidth;
+    commandText.classList.add('command-change');
+    managerTabs.forEach((tab) => {
+      const isSelected = tab.dataset.packageManager === manager;
+      tab.setAttribute('aria-pressed', String(isSelected));
+      if (isSelected) moveManagerIndicator(tab);
+    });
+    copyButtonRoot.render(
+      React.createElement(CopyButton, {
+        content: selectedCommand.command,
+        'aria-label': `Copy ${selectedCommand.command} command`,
+      }),
+    );
+  };
+  managerTabs.forEach((tab) => {
+    tab.addEventListener('click', () => updateInstallCommand(tab.dataset.packageManager));
+  });
+  updateInstallCommand('npm');
+  window.addEventListener('resize', () => {
+    const selectedTab = managerTabs.find((tab) => tab.getAttribute('aria-pressed') === 'true');
+    if (selectedTab) moveManagerIndicator(selectedTab);
+  });
 }
 
 const downloadCount = document.querySelector('#download-count');
