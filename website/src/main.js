@@ -3,6 +3,9 @@ import { createCounter } from 'unique-visitor-counter';
 import { createRoot } from 'react-dom/client';
 import { CopyButton } from './components/CopyButton.jsx';
 
+const growthApiBaseUrl = import.meta.env.DEV
+  ? 'http://localhost:3000'
+  : 'https://uniquevisitorscounter.onrender.com';
 const siteId = 'site_f321ea1a-9b0a-4f4b-8e02-b017a9f2648d';
 const packageManagerCommands = {
   npm: { action: 'npm install', command: 'npm install unique-visitor-counter@latest' },
@@ -70,6 +73,127 @@ if (visitorCount) {
   }).catch(() => {
     visitorCount.textContent = '—';
   });
+}
+
+const growthForm = document.querySelector('#growth-form');
+if (growthForm) {
+  const growthSiteInput = document.querySelector('#growth-site-id');
+  const growthRange = document.querySelector('#growth-range');
+  const growthResults = document.querySelector('#growth-results');
+  const growthChart = document.querySelector('#growth-chart');
+  const growthTotal = document.querySelector('#growth-total');
+  const growthStatus = document.querySelector('#growth-status');
+  const growthError = document.querySelector('#growth-error');
+  const growthSubmit = growthForm.querySelector('button[type="submit"]');
+  const svgNamespace = 'http://www.w3.org/2000/svg';
+  let activeSiteId = '';
+
+  const svgElement = (tag, attributes = {}, textContent) => {
+    const element = document.createElementNS(svgNamespace, tag);
+    Object.entries(attributes).forEach(([name, value]) => element.setAttribute(name, String(value)));
+    if (textContent !== undefined) element.textContent = textContent;
+    return element;
+  };
+
+  const renderGrowthChart = (days, entries) => {
+    const byDate = new Map(entries.map(({ date, count }) => [date, count]));
+    const today = new Date();
+    const end = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+    const points = Array.from({ length: days }, (_, index) => {
+      const date = new Date(end - (days - index - 1) * 86_400_000).toISOString().slice(0, 10);
+      return { date, count: byDate.get(date) ?? 0 };
+    });
+    const left = 42;
+    const right = 706;
+    const top = 18;
+    const bottom = 202;
+    const max = Math.max(1, ...points.map((point) => point.count));
+    const tickMax = Math.ceil(max / 4) * 4 || 4;
+    const coordinates = points.map((point, index) => ({
+      ...point,
+      x: left + (points.length === 1 ? 0 : index / (points.length - 1)) * (right - left),
+      y: bottom - (point.count / tickMax) * (bottom - top),
+    }));
+    growthChart.replaceChildren();
+    growthChart.setAttribute('aria-label', `Daily new unique visitors over the last ${days} days`);
+
+    for (let tick = 0; tick <= 4; tick += 1) {
+      const value = (tickMax / 4) * tick;
+      const y = bottom - (tick / 4) * (bottom - top);
+      growthChart.append(
+        svgElement('line', { x1: left, x2: right, y1: y, y2: y, class: 'growth-grid-line' }),
+        svgElement('text', { x: left - 9, y: y + 3, 'text-anchor': 'end', class: 'growth-axis-label' }, String(value)),
+      );
+    }
+
+    const linePath = coordinates.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
+    const areaPath = `${linePath} L ${right} ${bottom} L ${left} ${bottom} Z`;
+    growthChart.append(svgElement('path', { d: areaPath, class: 'growth-area' }));
+    growthChart.append(svgElement('path', { d: linePath, class: 'growth-line' }));
+
+    const labelCount = Math.min(5, points.length);
+    for (let index = 0; index < labelCount; index += 1) {
+      const pointIndex = Math.round((points.length - 1) * index / Math.max(1, labelCount - 1));
+      const point = coordinates[pointIndex];
+      const label = new Date(`${point.date}T00:00:00Z`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' });
+      growthChart.append(svgElement('text', {
+        x: point.x,
+        y: 230,
+        'text-anchor': index === 0 ? 'start' : index === labelCount - 1 ? 'end' : 'middle',
+        class: 'growth-date-label',
+      }, label));
+    }
+
+    if (points.every((point) => point.count === 0)) {
+      growthChart.append(svgElement('text', {
+        x: (left + right) / 2,
+        y: 112,
+        'text-anchor': 'middle',
+        class: 'growth-axis-label',
+      }, 'No new visitors in this period'));
+    } else {
+      coordinates.forEach((point) => {
+        const marker = svgElement('circle', { cx: point.x, cy: point.y, r: points.length > 45 ? 2.3 : 3.2, class: 'growth-point' });
+        marker.append(svgElement('title', {}, `${point.date}: ${point.count} new unique visitor${point.count === 1 ? '' : 's'}`));
+        growthChart.append(marker);
+      });
+    }
+  };
+
+  const loadGrowth = async () => {
+    if (!activeSiteId) return;
+    const days = Number(growthRange.value);
+    growthError.hidden = true;
+    growthStatus.textContent = 'Loading visitor data…';
+    growthSubmit.disabled = true;
+    try {
+      const response = await fetch(`${growthApiBaseUrl}/v1/visitors/${encodeURIComponent(activeSiteId)}/growth?days=${days}`);
+      const contentType = response.headers.get('content-type') ?? '';
+      if (!contentType.includes('application/json')) {
+        throw new Error('The growth API is not available on the server yet. Deploy the latest server version, then try again.');
+      }
+      const result = await response.json();
+      if (!response.ok) throw new Error(result?.error?.message || 'Could not load growth data.');
+      growthTotal.textContent = Number(result.total ?? 0).toLocaleString();
+      renderGrowthChart(days, Array.isArray(result.daily) ? result.daily : []);
+      growthStatus.textContent = `Showing daily new unique visitors for ${activeSiteId}.`;
+      growthResults.hidden = false;
+    } catch (error) {
+      growthError.textContent = error instanceof Error ? error.message : 'Could not load growth data. Please try again.';
+      growthError.hidden = false;
+      growthStatus.textContent = '';
+    } finally {
+      growthSubmit.disabled = false;
+    }
+  };
+
+  growthForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    activeSiteId = growthSiteInput.value.trim();
+    if (!activeSiteId) return;
+    loadGrowth();
+  });
+  growthRange.addEventListener('change', loadGrowth);
 }
 
 document.querySelectorAll('.docs-content pre').forEach((codeBlock) => {

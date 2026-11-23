@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#faf9f6" />
+    <meta name="description" content="View daily unique visitor growth for your website." />
+    <title>Analytics — Unique Visitor Counter</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Geist:wght@400;450;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <main class="page analytics-page">
+      <div class="analytics-shell">
+        <nav class="analytics-nav" aria-label="Main navigation">
+          <a class="analytics-brand" href="/">Unique Visitor Counter</a>
+          <span><a href="/docs/">[docs]</a><a href="/">[home]</a></span>
+        </nav>
+        <section class="growth-panel" id="visitor-growth" aria-labelledby="growth-title">
+          <div class="growth-heading">
+            <p class="growth-eyebrow">SITE ANALYTICS</p>
+            <h1 id="growth-title">See your visitor growth</h1>
+            <p>Enter your site ID to see how many new unique visitors arrive each day.</p>
+          </div>
+          <form class="growth-form" id="growth-form">
+            <label for="growth-site-id">Your site ID</label>
+            <div class="growth-input-row">
+              <input id="growth-site-id" name="siteId" type="text" placeholder="site_…" autocomplete="off" required />
+              <button type="submit">Show growth <span aria-hidden="true">↗</span></button>
+            </div>
+            <p class="growth-form-hint">Find it in the config file created by <code>npx uvc init</code>.</p>
+          </form>
+          <div class="growth-results" id="growth-results" hidden>
+            <div class="growth-toolbar">
+              <div><span class="growth-total" id="growth-total">0</span><span class="growth-total-label"> total unique visitors</span></div>
+              <label class="growth-range-label" for="growth-range">Last</label>
+              <select id="growth-range" aria-label="Chart date range">
+                <option value="7">7 days</option>
+                <option value="30" selected>30 days</option>
+                <option value="90">90 days</option>
+              </select>
+            </div>
+            <div class="growth-chart-wrap">
+              <svg class="growth-chart" id="growth-chart" viewBox="0 0 720 250" role="img" aria-label="Daily new unique visitors over the last 30 days"></svg>
+            </div>
+            <p class="growth-status" id="growth-status" aria-live="polite"></p>
+          </div>
+          <p class="growth-error" id="growth-error" role="status" hidden></p>
+          <p class="growth-note">Daily values count browsers on their first visit. Repeat visits are not included.</p>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

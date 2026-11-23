@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         home: resolve('.', 'index.html'),
         docs: resolve('.', 'docs/index.html'),
+        analytics: resolve('.', 'analytics/index.html'),
       },
     },
   },
