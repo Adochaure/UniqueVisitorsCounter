@@ -51,3 +51,51 @@ export async function getSiteCount(siteId: string): Promise<VisitorCountResponse
   );
   return { count: Number(result.rows[0]?.count ?? 0) };
 }
+
+export interface DailyVisitorCount {
+  date: string;
+  count: number;
+}
+
+export interface SiteGrowthResponse {
+  siteId: string;
+  total: number;
+  days: number;
+  daily: DailyVisitorCount[];
+}
+
+export async function getSiteGrowth(siteId: string, days: number): Promise<SiteGrowthResponse> {
+  if (!databasePool) throw new Error('DATABASE_URL is not configured.');
+
+  const result = await databasePool.query<{ date: string | null; count: string }>(
+    `SELECT TO_CHAR((v.first_seen_at AT TIME ZONE 'UTC')::date, 'YYYY-MM-DD') AS date,
+            COUNT(v.id)::text AS count
+     FROM websites AS w
+     LEFT JOIN visitors AS v
+       ON v.website_id = w.id
+      AND v.first_seen_at >= ((((CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::date - ($2::int - 1))::timestamp) AT TIME ZONE 'UTC')
+      AND v.first_seen_at < ((((CURRENT_TIMESTAMP AT TIME ZONE 'UTC')::date + 1)::timestamp) AT TIME ZONE 'UTC')
+     WHERE w.site_id = $1
+     GROUP BY w.id, (v.first_seen_at AT TIME ZONE 'UTC')::date
+     ORDER BY (v.first_seen_at AT TIME ZONE 'UTC')::date`,
+    [siteId, days],
+  );
+
+  // The lifetime total is returned separately so the UI can show it with the chart.
+  const totalResult = await databasePool.query<{ count: string }>(
+    `SELECT COUNT(v.id)::text AS count
+     FROM websites AS w
+     LEFT JOIN visitors AS v ON v.website_id = w.id
+     WHERE w.site_id = $1`,
+    [siteId],
+  );
+
+  return {
+    siteId,
+    total: Number(totalResult.rows[0]?.count ?? 0),
+    days,
+    daily: result.rows
+      .filter((row): row is { date: string; count: string } => row.date !== null)
+      .map((row) => ({ date: row.date, count: Number(row.count) })),
+  };
+}

@@ -1,5 +1,9 @@
 import type { RequestHandler } from 'express';
-import { getSiteCount as readSiteCount, recordVisitor } from './visitor.service.js';
+import {
+  getSiteCount as readSiteCount,
+  getSiteGrowth as readSiteGrowth,
+  recordVisitor,
+} from './visitor.service.js';
 
 export const postVisitor: RequestHandler = async (request, response, next) => {
   const { siteId, visitorId } = request.body as { siteId?: unknown; visitorId?: unknown };
@@ -30,6 +34,28 @@ export const getSiteCount: RequestHandler = async (request, response, next) => {
 
   try {
     response.status(200).json(await readSiteCount(siteId));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getSiteGrowth: RequestHandler = async (request, response, next) => {
+  const routeSiteId = request.params.siteId;
+  const siteId = Array.isArray(routeSiteId) ? routeSiteId[0] : routeSiteId;
+  const requestedDays = request.query.days;
+  const days = requestedDays === undefined ? 30 : Number(requestedDays);
+
+  if (!siteId?.trim()) {
+    response.status(400).json({ error: { message: 'siteId is required.' } });
+    return;
+  }
+  if (!Number.isInteger(days) || days < 7 || days > 90) {
+    response.status(400).json({ error: { message: 'days must be an integer from 7 to 90.' } });
+    return;
+  }
+
+  try {
+    response.status(200).json(await readSiteGrowth(siteId, days));
   } catch (error) {
     next(error);
   }
