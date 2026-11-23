@@ -1,6 +1,6 @@
 {
   "name": "unique-visitor-counter",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Privacy-first unique visitor counter SDK.",
   "license": "MIT",
   "homepage": "https://unique-visitors-counter.vercel.app/",
@@ -41,7 +41,9 @@
   "bin": {
     "uvc": "./dist/cli.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -55,11 +57,15 @@
     "react": ">=18"
   },
   "peerDependenciesMeta": {
-    "react": { "optional": true }
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "^19.0.10",
     "react": "^19.0.0"
   },
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  }
 }

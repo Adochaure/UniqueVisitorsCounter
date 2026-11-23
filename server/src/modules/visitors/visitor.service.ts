@@ -3,6 +3,7 @@ import {
   getSiteGrowth as readSiteGrowth,
   recordVisitorAndGetCount,
 } from './visitor.repository.js';
+import type { SiteGrowthResponse } from './visitor.repository.js';
 import type { RecordVisitorInput, VisitorCountResponse } from './visitor.types.js';
 
 export async function recordVisitor(input: RecordVisitorInput): Promise<VisitorCountResponse> {
@@ -13,6 +14,6 @@ export async function getSiteCount(siteId: string): Promise<VisitorCountResponse
   return readSiteCount(siteId);
 }
 
-export async function getSiteGrowth(siteId: string, days: number) {
+export async function getSiteGrowth(siteId: string, days: number): Promise<SiteGrowthResponse> {
   return readSiteGrowth(siteId, days);
 }

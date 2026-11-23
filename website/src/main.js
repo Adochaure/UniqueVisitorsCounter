@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { inject } from '@vercel/analytics';
 import { createCounter } from 'unique-visitor-counter';
 import { createRoot } from 'react-dom/client';
 import { CopyButton } from './components/CopyButton.jsx';
+
+inject();
 
 const growthApiBaseUrl = import.meta.env.DEV
   ? 'http://localhost:3000'
