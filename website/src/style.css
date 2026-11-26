@@ -24,7 +24,7 @@ a:hover { color: var(--accent); }
 
 .page { min-height: 100vh; min-height: 100dvh; padding: 48px 24px; }
 .content { width: min(100%, 544px); margin-inline: auto; }
-.home-hero { position: relative; display: flex; min-height: calc(100vh - 96px); min-height: calc(100dvh - 96px); flex-direction: column; justify-content: center; gap: 31px; }
+.home-hero { position: sticky; z-index: 1; top: 24px; display: flex; min-height: calc(100vh - 96px); min-height: calc(100dvh - 96px); flex-direction: column; justify-content: center; gap: 31px; background: var(--background); }
 .topline { display: flex; align-items: center; justify-content: space-between; min-height: 18px; }
 .release, .visitor-stat, .bottom-links, .install-command { font-family: 'DM Mono', ui-monospace, monospace; }
 .brand-release { display: inline-flex; align-items: center; }
@@ -35,8 +35,7 @@ a:hover { color: var(--accent); }
 .header-stats { display: inline-flex; align-items: center; gap: 15px; }
 .download-stat { display: inline-flex; align-items: baseline; gap: 3px; color: #858178; font: 12px 'DM Mono', ui-monospace, monospace; white-space: nowrap; }
 .download-icon { width: 13px; height: 13px; align-self: center; margin-right: 2px; color: var(--accent); }
-.download-count { color: #a09b92; font-weight: 500; font-variant-numeric: tabular-nums; }
-.download-plus { margin-left: -3px; color: #a09b92; }
+.download-count, #visitor-count { color: var(--accent); font-weight: 500; font-variant-numeric: tabular-nums; }
 .download-label { color: #a09b92; font-size: 10px; }
 .visitor-stat { display: inline-flex; align-items: center; gap: 7px; color: #858178; font-size: 12px; white-space: nowrap; }
 .visitor-icon {  position: relative; display: inline-flex; width: 16px; height: 14px; align-items: end; justify-content: center; gap: 1px; margin-right: 2px; }
@@ -79,25 +78,21 @@ a:hover { color: var(--accent); }
 .right-links { display: inline-flex; gap: 11px; }
 .microcopy { margin: -20px 0 0; color: #9a968e; font-size: 11px; }
 .scroll-cue { position: absolute; bottom: 0; left: 50%; display: grid; width: 38px; height: 42px; place-items: start center; color: #a09b92; transform: translateX(-50%); }
-.scroll-cue::before { position: absolute; bottom: 3px; left: 2px; width: 34px; height: 1px; border-top: 1px dashed var(--border); content: ''; transform: scaleX(1); transform-origin: center; animation: scroll-cue-line 1.8s ease-out infinite; }
 .scroll-cue:hover,.scroll-cue:focus-visible { color: var(--accent); }
 .scroll-cue:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
 .scroll-cue svg { width: 18px; height: 18px; animation: scroll-cue-drop 1.8s cubic-bezier(.45,0,.25,1) infinite; }
 @keyframes scroll-cue-drop { 0%, 15% { transform: translateY(0); } 47%, 57% { transform: translateY(22px); } 82%, 100% { transform: translateY(0); } }
-@keyframes scroll-cue-line { 0%, 47% { transform: scaleX(1); } 54% { transform: scaleX(1.35); } 61% { transform: scaleX(.92); } 68% { transform: scaleX(1.12); } 76%, 100% { transform: scaleX(1); } }
 .home-details { scroll-margin-top: 24px; }
 .home-lede { margin: -22px 0 0; color: #77736d; font-size: 14px; line-height: 1.75; opacity: 0; filter: blur(6px); animation: arrive 460ms cubic-bezier(.2,.7,.2,1) both; animation-delay: .18s; }
-.home-details { display: grid; gap: 25px; margin-top: clamp(160px, 35vh, 320px); padding-top: 28px; border-top: 1px solid #e6e2d9; }
+.home-details { position: relative; z-index: 2; display: grid; gap: 25px; margin-top: clamp(80px, 18vh, 160px); padding: 28px 0 0; border-top: 1px solid #e6e2d9; background: var(--background); }
 .home-details h2 { margin: 0 0 9px; color: #342b38; font-size: 18px; font-weight: 550; letter-spacing: -.035em; }
 .home-details h3 { margin: 17px 0 6px; color: #453b49; font-size: 14px; font-weight: 550; }
 .home-details p { margin: 0; color: #716c73; font-size: 13px; line-height: 1.75; }
 .home-details code { color: var(--accent); font: .92em 'DM Mono', ui-monospace, monospace; }
 .home-details a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-.home-details section { opacity: 0; filter: blur(6px); animation: arrive 460ms cubic-bezier(.2,.7,.2,1) both; }
-.home-details section:nth-child(1) { animation-delay: .08s; }
-.home-details section:nth-child(2) { animation-delay: .13s; }
-.home-details section:nth-child(3) { animation-delay: .18s; }
-.home-details section:nth-child(4) { animation-delay: .23s; }
+.scroll-effects-ready .home-hero { opacity: var(--hero-scroll-opacity, 1); filter: blur(var(--hero-scroll-blur, 0px)); transform: translateY(var(--hero-scroll-offset, 0px)); }
+.scroll-effects-ready .home-details section { opacity: 0; filter: blur(6px); transform: translateY(14px); transition: opacity 460ms cubic-bezier(.2,.7,.2,1), filter 460ms cubic-bezier(.2,.7,.2,1), transform 460ms cubic-bezier(.2,.7,.2,1); }
+.scroll-effects-ready .home-details section.is-visible { opacity: 1; filter: blur(0); transform: translateY(0); }
 .growth-panel { display: grid; gap: 21px; margin: 28px 0 30px; padding: 26px 0 0; border-top: 1px solid #e6e2d9; scroll-margin-top: 24px; }
 .growth-heading { display: grid; gap: 8px; }
 .growth-eyebrow { margin: 0; color: #98938b; font: 10px 'DM Mono', ui-monospace, monospace; letter-spacing: .08em; }
@@ -165,6 +160,7 @@ a:hover { color: var(--accent); }
 @media (max-width: 480px) {
   .page { padding: 32px 23px; }
   .home-hero { min-height: calc(100vh - 64px); min-height: calc(100dvh - 64px); gap: 27px; }
+  .scroll-effects-ready .home-hero { top: 16px; }
   .release, .visitor-stat, .download-stat, .bottom-links { font-size: 10px; }
   .header-stats { gap: 9px; }
   .download-label { font-size: 9px; }
@@ -182,6 +178,7 @@ a:hover { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; scroll-behavior: auto !important; }
   .package-manager-indicator { transition-duration: 1ms; }
+  .scroll-effects-ready .home-details section { opacity: 1; filter: none; transform: none; transition: none; }
 }
 
 .docs-page { min-height: 100vh; min-height: 100dvh; padding: 32px 28px 72px; }

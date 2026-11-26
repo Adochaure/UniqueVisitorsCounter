@@ -58,15 +58,71 @@ if (installCopySlot) {
 
 const downloadCount = document.querySelector('#download-count');
 if (downloadCount) {
-  const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1200;
-  const start = performance.now();
-  const animateDownloads = (now) => {
-    const progress = duration === 0 ? 1 : Math.min((now - start) / duration, 1);
-    const eased = 1 - (1 - progress) ** 3;
-    downloadCount.textContent = Math.round(712 * eased).toLocaleString();
-    if (progress < 1) requestAnimationFrame(animateDownloads);
+  const packageName = 'unique-visitor-counter';
+  const formatDate = (date) => date.toISOString().slice(0, 10);
+  const loadDownloadCount = async () => {
+    const end = new Date();
+    const start = new Date(end);
+    start.setUTCMonth(start.getUTCMonth() - 18);
+    const range = `${formatDate(start)}:${formatDate(end)}`;
+    const endpoint = `https://api.npmjs.org/downloads/point/${range}/${encodeURIComponent(packageName)}`;
+
+    try {
+      const response = await fetch(endpoint, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`npm Downloads API returned ${response.status}`);
+      const result = await response.json();
+      if (!Number.isSafeInteger(result.downloads) || result.downloads < 0) {
+        throw new Error('npm Downloads API returned an invalid count');
+      }
+
+      downloadCount.textContent = result.downloads.toLocaleString();
+      downloadCount.closest('.download-stat')?.setAttribute(
+        'aria-label',
+        `${result.downloads.toLocaleString()} npm downloads in the last 18 months`,
+      );
+    } catch (error) {
+      downloadCount.textContent = '—';
+      console.error('Could not load npm download count:', error);
+    }
   };
-  requestAnimationFrame(animateDownloads);
+  loadDownloadCount();
+}
+
+const homeHero = document.querySelector('.home-hero');
+const homeDetails = document.querySelector('.home-details');
+const homeDetailSections = [...document.querySelectorAll('.home-details section')];
+if (homeHero || homeDetailSections.length > 0) {
+  document.body.classList.add('scroll-effects-ready');
+
+  if (homeHero && homeDetails && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let scrollFrame = 0;
+    const updateHeroOnScroll = () => {
+      scrollFrame = 0;
+      const distance = Math.max(1, window.innerHeight);
+      const detailsTop = homeDetails.getBoundingClientRect().top;
+      const progress = Math.min(1, Math.max(0, (window.innerHeight - detailsTop) / distance));
+      homeHero.style.setProperty('--hero-scroll-opacity', (1 - progress).toFixed(3));
+      homeHero.style.setProperty('--hero-scroll-offset', `${-18 * progress}px`);
+      homeHero.style.setProperty('--hero-scroll-blur', `${6 * progress}px`);
+    };
+    window.addEventListener('scroll', () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateHeroOnScroll);
+    }, { passive: true });
+    updateHeroOnScroll();
+  }
+
+  if (homeDetailSections.length > 0 && 'IntersectionObserver' in window) {
+    const detailObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+    homeDetailSections.forEach((section) => detailObserver.observe(section));
+  } else {
+    homeDetailSections.forEach((section) => section.classList.add('is-visible'));
+  }
 }
 
 const visitorCount = document.querySelector('#visitor-count');
