@@ -3,11 +3,13 @@ import cors from 'cors';
 import { env } from './config/env.js';
 import { errorMiddleware } from './middleware/error.middleware.js';
 import { rateLimitMiddleware } from './middleware/rate-limit.middleware.js';
+import { requestLogMiddleware } from './middleware/request-log.middleware.js';
 import { visitorRoutes } from './modules/visitors/visitor.routes.js';
 
 export const app = express();
 
 app.disable('x-powered-by');
+app.use(requestLogMiddleware);
 app.use(
   cors({
     origin:
